@@ -1,0 +1,10 @@
+datadog:
+  apiKeyExistingSecret: datadog-secret
+  apm:
+    instrumentation:
+      enabled: true
+  logs:
+    enabled: true
+    containerCollectAll: true
+  serviceMonitoring:
+    enabled: true
