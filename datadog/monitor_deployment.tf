@@ -30,14 +30,13 @@ provider "datadog" {
 
 # Datadog monitor resource
 resource "datadog_monitor" "monitor" {
-  name    = "Running Too Many Pods"
-  type    = "metric alert"
-  message = "Scale Down those pods"
-  query   = "max(last_5m):kubernetes_state.pod.status_phase{phase:running,namespace:default} > 8"
+  name    = "Kubernetes ImagePullBackOff Alert - hello-world-container"
+  type    = "log alert"
+  message = "Alert: The hello-world-container in the hello-world-deployment is experiencing ImagePullBackOff. Please check the container image configuration."
+  query   = "logs('service:kubernetes AND @msg:\"ImagePullBackOff\" AND kubernetes.container_name:hello-world-container AND kubernetes.deployment:hello-world-deployment').index('main').rollup('count').last('5m') > 0"
 
   monitor_thresholds {
-    warning    = 6
-    critical   = 8
+    critical = 1
   }
 
   notify_no_data    = false
